@@ -5,6 +5,9 @@ import LocationList from './components/LocationList';
 import axios from 'axios';
 import './App.css';
 
+// Tambahkan base URL untuk API
+const API_BASE_URL = 'https://backend-eight-kappa-66.vercel.app/api/locations';
+
 function App() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -18,7 +21,7 @@ function App() {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get('/api/locations');
+      const response = await axios.get(API_BASE_URL);
       if (Array.isArray(response.data)) {
         setLocations(response.data);
       } else {
@@ -40,7 +43,7 @@ function App() {
 
   const handleAddLocation = async (locationData) => {
     try {
-      await axios.post('/api/locations', locationData);
+      await axios.post(API_BASE_URL, locationData);
       fetchLocations();
       setTempMarker(null);
       alert('Location added successfully!');
@@ -52,7 +55,7 @@ function App() {
 
   const handleUpdateLocation = async (id, locationData) => {
     try {
-      await axios.put(`/api/locations/${id}`, locationData);
+      await axios.put(`${API_BASE_URL}/${id}`, locationData);
       fetchLocations();
       setEditingLocation(null);
       setTempMarker(null);
@@ -66,7 +69,7 @@ function App() {
   const handleDeleteLocation = async (id) => {
     if (window.confirm('Are you sure you want to delete this location?')) {
       try {
-        await axios.delete(`/api/locations/${id}`);
+        await axios.delete(`${API_BASE_URL}/${id}`);
         fetchLocations();
         alert('Location deleted successfully!');
       } catch (error) {
