@@ -18,9 +18,16 @@ function App() {
   const fetchLocations = async () => {
     try {
       const response = await axios.get('/api/locations');
-      setLocations(response.data);
+      // Pastikan response.data adalah array
+      if (Array.isArray(response.data)) {
+        setLocations(response.data);
+      } else {
+        console.error('Response is not an array:', response.data);
+        setLocations([]);
+      }
     } catch (error) {
       console.error('Error fetching locations:', error);
+      setLocations([]);
     }
   };
 
@@ -83,23 +90,23 @@ function App() {
     <div className="App">
       <div className="container">
         <div className="sidebar">
-          <LocationForm 
+          <LocationForm
             onAddLocation={handleAddLocation}
             onUpdateLocation={handleUpdateLocation}
             editingLocation={editingLocation}
             onCancelEdit={handleCancelEdit}
             tempMarker={tempMarker}
           />
-          <LocationList 
-            locations={locations} 
+          <LocationList
+            locations={locations}
             onDeleteLocation={handleDeleteLocation}
             onSelectLocation={setSelectedLocation}
             onEditLocation={handleEditLocation}
           />
         </div>
         <div className="map-container">
-          <MapComponent 
-            locations={locations} 
+          <MapComponent
+            locations={locations}
             selectedLocation={selectedLocation}
             onMapClick={handleMapClick}
             tempMarker={tempMarker}

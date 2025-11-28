@@ -38,16 +38,16 @@ function MapComponent({ locations, selectedLocation, onMapClick, tempMarker }) {
   const defaultZoom = 10;
 
   return (
-    <MapContainer 
-      center={defaultCenter} 
-      zoom={defaultZoom} 
+    <MapContainer
+      center={defaultCenter}
+      zoom={defaultZoom}
       style={{ height: '100%', width: '100%' }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      
+
       {/* Temporary marker for clicked location */}
       {tempMarker && (
         <Marker position={[tempMarker.latitude, tempMarker.longitude]}>
@@ -62,9 +62,9 @@ function MapComponent({ locations, selectedLocation, onMapClick, tempMarker }) {
       )}
 
       {/* Existing locations */}
-      {locations.map((location) => (
-        <Marker 
-          key={location._id} 
+      {Array.isArray(locations) && locations.map((location) => (
+        <Marker
+          key={location._id}
           position={[location.latitude, location.longitude]}
         >
           <Popup>
@@ -75,7 +75,7 @@ function MapComponent({ locations, selectedLocation, onMapClick, tempMarker }) {
           </Popup>
         </Marker>
       ))}
-      
+
       <MapUpdater selectedLocation={selectedLocation} />
       <MapClickHandler onMapClick={onMapClick} />
     </MapContainer>
