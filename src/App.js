@@ -10,6 +10,7 @@ function App() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [editingLocation, setEditingLocation] = useState(null);
   const [tempMarker, setTempMarker] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     fetchLocations();
@@ -18,7 +19,6 @@ function App() {
   const fetchLocations = async () => {
     try {
       const response = await axios.get('/api/locations');
-      // Pastikan response.data adalah array
       if (Array.isArray(response.data)) {
         setLocations(response.data);
       } else {
@@ -86,10 +86,17 @@ function App() {
     setTempMarker(null);
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className="App">
+      <button className="sidebar-toggle" onClick={toggleSidebar}>
+        {isSidebarOpen ? '✕' : '☰'}
+      </button>
       <div className="container">
-        <div className="sidebar">
+        <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
           <LocationForm
             onAddLocation={handleAddLocation}
             onUpdateLocation={handleUpdateLocation}
